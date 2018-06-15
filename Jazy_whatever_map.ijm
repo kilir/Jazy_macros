@@ -2,8 +2,8 @@
 //-----------------------------------------------------------------------------------------
 //-----------------------------------Map-particle-porperties-to-image----------------------
 //---------------------------------------------ImageJ--------------------------------------
-// todo : holes will not be filled by default, however, maybe one could ask the user whether this 
-// considered for particles with holes
+// todo : holes will not be filled, however, maybe one could ask the user which are should be
+// evaluated for particles with holes
 
 
 //macro "invert inverted LUT [z]"{
@@ -94,8 +94,8 @@ rename(otit +"map_of_");
 
 
 //--------------------------------create-map-type-dialog-------------------------------------------------	
-Dialog.create("Radio Buttons");
-  items = newArray("Area", "Radius", "Aspect ratio", "Axial ratio" , "Angle" , "Circularity" , "Solidity" , "ElliLength");
+Dialog.create("Select map type");
+  items = newArray("Area", "Diameter", "DiameterCorr", "Aspect ratio", "Axial ratio" , "Angle" , "Circularity" , "Solidity" , "ElliLength");
   Dialog.addRadioButtonGroup("Maptype", items, 8, 1, "Area");
   Dialog.show;
   maptype = Dialog.getRadioButton;
@@ -134,10 +134,16 @@ if (maptype =="Area"){ //----------------------------AREA[0 - ++]---------------
 	minval = getWidth * getHeight;
 	}
 
-if (maptype =="Radius"){ //----------------------------Radius--[0 - ++]-------------------------------------------------
+if (maptype =="Diameter"){ //----------------------------Diameter--[0 - ++]-------------------------------------------------
 	qtype = "Area";
 	maxval = 0;
-	minval = sqrt((getWidth * getHeight)/3.14159);
+	minval = 2 * sqrt((getWidth * getHeight)/PI);
+	}
+
+if (maptype =="DiameterCorr"){ //----------------------------DiameterCorr--[0 - ++]-------------------------------------------------
+	qtype = "Area";
+	maxval = 0;
+	minval = 2 * sqrt((getWidth * getHeight)/PI);
 	}
 
 if (maptype =="Aspect ratio"){ //----------------------------Aspect ratio--[1 - ++]-------------------------------------------------
@@ -184,15 +190,22 @@ if (maptype =="ElliLength"){ //----------------------------ElliLength---[0 - ++1
 n=nResults;
 // initialize arrays
 val=newArray(n);
-for (i=0;i<n; i++){
-    val[i] = getResult(qtype,i);      
+
+if (maptype =="DiameterCorr"){
+	for (i=0;i<n; i++){
+    	val[i] = getResult("Area",i)+getResult("Perim.",i); 
+	}
+} else {
+	for (i=0;i<n; i++){
+    	val[i] = getResult(qtype,i);      
+}
 }
 Array.getStatistics(val, min, max, mean, stdDev);
 	
 // special case for radius
-if (maptype =="Radius"){
-	max=sqrt(max/3.14159);
-	min=sqrt(min/3.14159);
+if (maptype =="Diameter" || maptype =="DiameterCorr"){
+	max=2 * sqrt(max/PI);
+	min=2 * sqrt(min/PI);
 }
 
 //------------------------ask-what-limits-to-use--------------------------------------------------------
@@ -222,8 +235,8 @@ for (i=0; i<roiManager("count"); i++){
 
         fval = getResult(qtype);
         
-		if (maptype =="Radius"){
-        	fval = sqrt(fval/3.14159);
+		if (maptype =="Diameter" || maptype =="DiameterCorr"){
+        	fval = 2* sqrt(fval/PI);
 		} else {
 		fval = fval;
 		}
