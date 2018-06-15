@@ -20,7 +20,13 @@ Version 0.0.6a
 */
 
 requires("1.50n")
-macro "stripstar" {
+macro "stripper [S]" {
+
+Dialog.create("Correct perimeter?");
+  items = newArray("area+perim", "area");
+  Dialog.addRadioButtonGroup("Choose area definition", items, 2, 1, "area+perim");
+  Dialog.show;
+  eqDType = Dialog.getRadioButton;
 
 setThreshold(255,255);
 run("Options...", "iterations=1 count=2 black do=Nothing");
@@ -29,10 +35,17 @@ run("Analyze Particles...", "size=1-Infinity display clear");
 
 // now set the result table
 eqdia = newArray(nResults);
+if(eqDType == "area+perim"){
 for (i=0;i<nResults;i++){
 	eqdia[i] = 2*sqrt( ( (getResult("Area",i)) + (getResult("Perim.",i)) ) /PI);
 	setResult("EqDia", i, eqdia[i]);
 	};
+} else {
+for (i=0;i<nResults;i++){
+	eqdia[i] = 2*sqrt( ( (getResult("Area",i)) ) /PI);
+	setResult("EqDia", i, eqdia[i]);
+	};
+}
 
 //Array.print(eqdia);
 	
@@ -56,7 +69,7 @@ print("trying to stripstar ...");
 print(".................................");
 print("histogram bins (eq.d) - left edge:");
 Array.print (BinArray);
-print("counts:")
+print("counts:");
 Array.print (CountArray);
 
 nBins=lengthOf(BinArray);
@@ -113,9 +126,6 @@ for (i=0;i<=inonzero;i++){
 
 f = newArray(inonzero+1);
 fneg = newArray(inonzero+1);
-print("gin")
-Array.print(gg);
-
 for (k=0;k<=inonzero;k++){
 //print("k",k);
       m=inonzero-k; // +1 not needed since k starts at 0    
@@ -353,7 +363,7 @@ Plot.add("line", x, gtot);
 //-----------------------------------------------------------
 //hd 
 rms = calcRMS(eqdia);
-Array.getStatistics(eqdia, min, max, mean, stdDev)
+Array.getStatistics(eqdia, min, max, mean, stdDev);
 print("-------------------------------------");
 print("h(d)    mean        rms           std");
 print("           " +mean+ "   " +rms+ "   " +stdDev);
@@ -362,7 +372,7 @@ print("-------------------------------------");
 
 //hD
 bmean = binMean(f,bc);
-bRMS = binRMS(f,bc)
+bRMS = binRMS(f,bc);
 bstd = binStd(f,bc);
 print("-------------------------------------");
 print("h(D)    mean        rms           std");
@@ -372,7 +382,7 @@ print("-------------------------------------");
 
 //vD
 bmean = binMean(fvol,bc);
-bRMS = binRMS(fvol,bc)
+bRMS = binRMS(fvol,bc);
 bstd = binStd(fvol,bc);
 print("-------------------------------------");
 print("v(D)    mean        rms           std");
@@ -440,8 +450,7 @@ function binRMS(binprob,bincenter){
 	bRMS = bRMS + binprob[i]*pow(bincenter[i],2);
 	bsum =  bsum + binprob[i]; // should be 1 resp 100 but who knows
 	}
-	bRMS
-	= sqrt(bRMS/bsum);
+	bRMS= sqrt(bRMS/bsum);
 	return bRMS
 }
 
