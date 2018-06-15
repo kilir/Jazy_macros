@@ -1,21 +1,18 @@
-//Version 0.0.13a
+//Version 0.0.14a
 //-----------------------------------------------------------------------------------------
 //-----------------------------------Map-particle-porperties-to-image----------------------
 //---------------------------------------------ImageJ--------------------------------------
-// todo : holes will not be filled, however, maybe one could ask the user which are should be
-// evaluated for particles with holes
+// todo : holes will not be filled, however, maybe one could ask the user if this is desired
 
 
-//macro "invert inverted LUT [z]"{
-//run("Invert LUT");
-//run("Invert");
+macro "invert inverted LUT [z]"{
+run("Invert LUT");
+run("Invert");
+}
 
-//}
-
-//macro "invert image [i]"{
-//run("Invert"); 
-
-//}
+macro "invert image [i]"{
+run("Invert"); 
+}
 
 macro "whatevera map [a]"
 {
