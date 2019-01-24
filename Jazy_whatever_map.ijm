@@ -258,7 +258,9 @@ rename(getTitle +maptype);
 //run("Invert");
 run("Remove Overlay");
 run("Calibrate...", "function=[Straight Line] unit=[Unit] text1=["+minC+" "+maxC+"] text2=["+user_min_val+" "+user_max_val+"]");
-run("Calibration Bar...", "location=[Lower Left] fill=[White] label=Black number=5 decimal=2 font=10 zoom=1 bold");
+height = getHeight;
+zoom = floor(height/999)+1;
+run("Calibration Bar...", "location=[Lower Left] fill=[White] label=Black number=5 decimal=2 font=10 zoom="+zoom+" bold");
 
 print(getTime()-t1);
 //updateResults();
