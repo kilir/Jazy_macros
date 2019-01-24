@@ -217,7 +217,10 @@ blues[0]=255;
 setLut(reds, greens, blues);
 // get an extra image with a calibration bar
 run("Calibrate...", "function=[Straight Line] unit=[Gray Value] text1=["+minC+" "+maxC+"] text2=["+user_min_val+" "+user_max_val+"]");
-run("Calibration Bar...", "location=[Lower Left] fill=[White] label=Black number=5 decimal=2 font=10 zoom=1 bold");
+// size of calib bar
+height = getHeight;
+zoom = floor(height/999)+1;
+run("Calibration Bar...", "location=[Lower Left] fill=[White] label=Black number=5 decimal=2 font=10 zoom="+zoom+" bold");
 // reset batch mode
 autoUpdate(true);
 setBatchMode("exit and display");
