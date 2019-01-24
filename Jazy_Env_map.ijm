@@ -19,7 +19,6 @@ run("Invert");
 macro "invert image [i]"{
 run("Invert");
 }
-
 //---------------------------------------------------------------------------------------------
 
 macro "map env. prop [p]"{
@@ -203,6 +202,9 @@ for (i=0;i<n; i++){
     fill();
 }
 
+//set label
+setMetadata("Label", maptype);
+
 // clean up
 run("Select None");
 run("Remove Overlay");
@@ -221,6 +223,8 @@ run("Calibrate...", "function=[Straight Line] unit=[Gray Value] text1=["+minC+" 
 height = getHeight;
 zoom = floor(height/999)+1;
 run("Calibration Bar...", "location=[Lower Left] fill=[White] label=Black number=5 decimal=2 font=10 zoom="+zoom+" bold");
+//set label
+setMetadata("Label", maptype);
 // reset batch mode
 autoUpdate(true);
 setBatchMode("exit and display");

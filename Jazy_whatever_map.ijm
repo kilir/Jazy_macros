@@ -4,7 +4,7 @@
 //---------------------------------------------ImageJ--------------------------------------
 // todo : holes will not be filled, however, maybe one could ask the user if this is desired
 
-
+/*
 macro "invert inverted LUT [z]"{
 run("Invert LUT");
 run("Invert");
@@ -16,7 +16,7 @@ run("Invert");
 
 macro "whatevera map [a]"
 {
-
+*/
 //function calc_filcol(fval,user_max_val,user_min_val)
 // shoudl calculate a color within the range
 // maxC-minC, e.g. 1-255 or 0-254
@@ -254,15 +254,17 @@ blues[0]=255;
 
 setLut(reds, greens, blues);
 rename(getTitle +maptype);
-
+//set label
+setMetadata("Label", maptype);
 //run("Invert");
 run("Remove Overlay");
 run("Calibrate...", "function=[Straight Line] unit=[Unit] text1=["+minC+" "+maxC+"] text2=["+user_min_val+" "+user_max_val+"]");
 height = getHeight;
 zoom = floor(height/999)+1;
 run("Calibration Bar...", "location=[Lower Left] fill=[White] label=Black number=5 decimal=2 font=10 zoom="+zoom+" bold");
-
-print(getTime()-t1);
+//set label
+setMetadata("Label", maptype);
+//print(getTime()-t1);
 //updateResults();
 autoUpdate(true);
 setBatchMode("exit and display");
