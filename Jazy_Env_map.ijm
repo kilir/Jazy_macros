@@ -1,8 +1,14 @@
-//Version 0.0.4a
+//Version 0.0.5a
 //-----------------------------------------------------------------------------------------
 //-------------------------------Map-envelop-related-properties-to-image-------------------
 //---------------------------------------------ImageJ--------------------------------------
 // needs some work
+// TODO:
+// - adapt size of calibration bar to image size (?)
+// - label map property
+// - fix calibation bar rounding non-sense
+// - write results to results window (they are calculated anyways)
+// 
 
 //---------------------------------------------------------------------------------------------
 macro "invert inverted LUT [z]"{
@@ -13,6 +19,7 @@ run("Invert");
 macro "invert image [i]"{
 run("Invert");
 }
+
 //---------------------------------------------------------------------------------------------
 
 macro "map env. prop [p]"{
@@ -152,9 +159,9 @@ for (i=0;i<n; i++){
 	deltA[i]=(areaP[i]-area[i])/area[i]*100;
 	radiusDelta[i]=sqrt((deltP[i])^2+(deltA[i])^2);
 	//print(paris[i]);
-	
-}
+	}
 
+	
 //------------------------ask-what-limits-to-use--------------------------------------------------------
 
 if (maptype=="paris"){
@@ -195,6 +202,7 @@ for (i=0;i<n; i++){
     doWand(x[i],y[i]);
     fill();
 }
+
 // clean up
 run("Select None");
 run("Remove Overlay");
@@ -213,6 +221,17 @@ run("Calibration Bar...", "location=[Lower Left] fill=[White] label=Black number
 // reset batch mode
 autoUpdate(true);
 setBatchMode("exit and display");
+
+// write out results
+run("Clear Results");
+for (i=0;i<n;i++){
+	setResult("paris",i,paris[i]);
+	setResult("deltP",i,deltP[i]);
+	setResult("deltA",i,deltA[i]);
+	setResult("radiusDelta",i,radiusDelta[i]);
+    }
+updateResults();
+
 }else{
 showMessage("binary image required");	
 }
