@@ -8,7 +8,7 @@
 // be too large (e.g. <10). Particles with codist^2 are not analysed
 // 0.0.4 added ignore particles touching edge
 // 0.0.9 added adjust to match
-
+// 0.0.10 stupid syntax update
 
 macro "XYexport-regdist-smooth [1]"{ 
 print("\\Clear");
@@ -18,7 +18,7 @@ run("Select None");
 //run("Set Scale...", "distance=0 known=0 pixel=1 unit=pixel");
 
 
-var codist = "3"; 
+var codist = "1"; 
 {
         Dialog.create("coordinate distance");
         Dialog.addMessage("Enter pixel distance");
@@ -56,16 +56,16 @@ for (i=0; i<nResults; i++) {
     XX = getResult('XStart', i);
     YY = getResult('YStart', i);
 
-        doWand(XX,YY);
+        doWand(XX, YY);
         run("Interpolate", "interval="+codist+" smooth adjust");
         getSelectionCoordinates(x, y);
-        	toScaled(x,y);
+        	toScaled(x, y);
         	{
-             		for (j=0; j<x.length; j++)
-         		print( x[j]+" "+y[j]*-1);
-         		print( x[0], y[0]*-1);
+             		for (j=0; j<x.length-1; j++)
+         			print(x[j]+ "  " + -1*y[j]);
+         			print(x[0], -1*y[0]);
         	}
-       	print( 0, 0);
+       	print(0, 0);
 	
 	countr = countr+(x.length+1);
 }
@@ -135,8 +135,8 @@ for (i=0; i<nResults; i++) {
         getSelectionCoordinates(x, y);
         	{
              		for (j=0; j<x.length; j++)
-         		print( x[j]+" "+y[j]*-1);
-         		print( x[0], y[0]*-1);
+         			print(x[j]+ "  " + -1*y[j]);
+         			print(x[0], -1*y[0]);
         	}
        	print( 0, 0);
 	
@@ -182,8 +182,8 @@ for (i=0; i<nResults; i++) {
         getSelectionCoordinates(x, y);
         	{
              		for (j=0; j<x.length; j++)
-         		print( x[j]+" "+y[j]*-1);
-         		print( x[0], y[0]*-1);
+         			print(x[j]+ "  " + -1*y[j]);
+         			print(x[0], -1*y[0]);
         	}
        	print( 0, 0);
 
