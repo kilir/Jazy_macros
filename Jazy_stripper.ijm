@@ -15,7 +15,7 @@ Version 0.0.6a
  Grain size tools (https://marcoalopez.github.io/GrainSizeTools/)
 
  TODO: works so far, but might need more testing
- TODO: strip out uneeded stuff
+ TODO: fix empty bin bug
  requires imageJ >1.50n
 */
 
