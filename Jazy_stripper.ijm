@@ -105,16 +105,13 @@ for (i=0;i<nBins;i++){
 	}
 	
 // find index of largest non-zero entry in countArray -1 
-inonzero = nBins-1;
-for (i=0;i<nBins;i++){
-	//print("a" +CountArray[i]);
-	if (CountArray[i] == 0){	
-		inonzero=i-1;	
-		}
-	}
-
+inonzero = lengthOf(CountArray)-1;
+do {
+   inonzero = inonzero-1;
+   } while(CountArray[inonzero] == 0);
 
 // populate array gg with matrix values
+//gg = newArray(inonzero+1);
 gg = newArray(inonzero+1);
 pos= newArray(inonzero,inonzero); //id of r corresponding to last non-zero entry
 val = getMatrixValue(r,pos);
@@ -122,7 +119,6 @@ val = getMatrixValue(r,pos);
 for (i=0;i<=inonzero;i++){        
        gg[i]=CountArray[i]*val/CountArray[inonzero];
 	}
-
 
 f = newArray(inonzero+1);
 fneg = newArray(inonzero+1);
@@ -295,6 +291,7 @@ sig = getNumber("sigma of kernel used estimate mode (default 0.56*bw)",sig);
 
 
 // get area
+
 areaM=0;
 for (i=0;i<n;i++){
 areaM = areaM + ded*vD[i];
