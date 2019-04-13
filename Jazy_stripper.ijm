@@ -272,8 +272,8 @@ Plot.setColor("blue", "black");
 Plot.add("connected", bcp, hDp);
 Plot.setColor("green", "black");
 Plot.add("connected",  bcp, vDp);
-Plot.setLimitsToFit();
-Plot.setLegend("h(d)\th(D)\tv(D)", "top-right");
+Plot.setLimits(0,NaN,0,NaN);
+Plot.setLegend("h(d)\th(D)\tv(D)", "Auto");
 Plot.setFontSize(18);
 Plot.show;
 
@@ -353,6 +353,7 @@ Plot.add("connected",bcplot ,vDplot);
 Plot.setColor("blue", "black");
 Plot.add("line", x, gtot);
 
+
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -393,10 +394,10 @@ mode= x[idmode[0]];
 print("-------------------------------------");
 print("mode v(D) " +mode);
 print("-------------------------------------");
-Plot.setLegend("v(D)\t kernelfit mode ="+mode+"" ,"top-right");
-Plot.setFontSize(18);
-Plot.setLimits(0,bincenter[n-1]+ded,0,gtot[idmode[0]]*1.3);
-
+Plot.setLegend("v(D)\t kernelfit mode ="+mode+"" ,"Auto Bottom-To-Top");
+Plot.setFontSize(20);
+//Plot.setLimits(0,bincenter[n-1]+ded,0,gtot[idmode[0]]*1.3);
+Plot.setLimits(0,NaN,0,NaN);
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //-----------------------------------------------------------
