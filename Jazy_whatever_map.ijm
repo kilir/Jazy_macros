@@ -50,7 +50,6 @@ minC=1;
 maxC=254;
 
 
-
 if(is("binary") == 1){
 autoUpdate(false);
 setBatchMode(true);
@@ -92,8 +91,8 @@ rename(otit +"map_of_");
 
 //--------------------------------create-map-type-dialog-------------------------------------------------	
 Dialog.create("Select map type");
-  items = newArray("Area", "Diameter", "DiameterCorr", "Aspect ratio", "Axial ratio" , "Angle" , "Circularity" , "Solidity" , "ElliLength");
-  Dialog.addRadioButtonGroup("Maptype", items, 8, 1, "Area");
+  items = newArray("Area", "Diameter", "DiameterCorr", "Aspect ratio", "Axial ratio" , "Angle" , "Circularity" , "Solidity" , "ElliLength" ,"ShapeFactor1");
+  Dialog.addRadioButtonGroup("Maptype", items, 9, 1, "Area");
   Dialog.show;
   maptype = Dialog.getRadioButton;
 
@@ -180,7 +179,11 @@ if (maptype =="ElliLength"){ //----------------------------ElliLength---[0 - ++1
 	minval = getWidth * getHeight;
 	}
 
-	
+if (maptype =="ShapeFactor1"){ //----------------------------ShapeFactor1---[1 - ++]------------------------------------------------
+	qtype = "Circ.";
+	maxval = 0;
+	minval = 100;
+	}
 
 //---------------------------get-max-min--------------------------------------------------------
 // get results
@@ -203,6 +206,11 @@ Array.getStatistics(val, min, max, mean, stdDev);
 if (maptype =="Diameter" || maptype =="DiameterCorr"){
 	max=2 * sqrt(max/PI);
 	min=2 * sqrt(min/PI);
+}
+
+if (maptype =="ShapeFactor1"){
+	max=pow((1/min),2);
+	min=pow((1/max),2);
 }
 
 //------------------------ask-what-limits-to-use--------------------------------------------------------
@@ -234,7 +242,11 @@ for (i=0; i<roiManager("count"); i++){
         
 		if (maptype =="Diameter" || maptype =="DiameterCorr"){
         	fval = 2* sqrt(fval/PI);
-		} else {
+		} 
+		if (maptype =="ShapeFactor1"){
+			fval = pow((1/fval),2);
+		}
+		else{
 		fval = fval;
 		}
 		
@@ -258,6 +270,21 @@ rename(getTitle +maptype);
 setMetadata("Label", maptype);
 //run("Invert");
 run("Remove Overlay");
+
+print(minC);
+print(maxC);
+print(user_min_val);
+print(user_max_val);
+
+if (minC > 0){
+   minC= minC;
+   }
+   
+if (maxC < 255){
+   maxC= maxC;
+   }
+   
+
 run("Calibrate...", "function=[Straight Line] unit=[Unit] text1=["+minC+" "+maxC+"] text2=["+user_min_val+" "+user_max_val+"]");
 height = getHeight;
 zoom = floor(height/999)+1;
