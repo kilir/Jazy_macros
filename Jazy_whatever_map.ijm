@@ -209,8 +209,8 @@ if (maptype =="Diameter" || maptype =="DiameterCorr"){
 }
 
 if (maptype =="ShapeFactor1"){
-	max=pow((1/min),2);
-	min=pow((1/max),2);
+	max=1/pow(min,2);
+	min=1/pow(max,2);
 }
 
 //------------------------ask-what-limits-to-use--------------------------------------------------------
