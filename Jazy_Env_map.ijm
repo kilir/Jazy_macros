@@ -156,7 +156,7 @@ for (i=0;i<n; i++){
 	paris[i]=2*(perim[i]-chull[i])/chull[i]*100;
 	deltP[i]=(perim[i]-chull[i])/perim[i]*100;
 	deltA[i]=(areaP[i]-area[i])/area[i]*100;
-	radiusDelta[i]=sqrt((deltP[i])^2+(deltA[i])^2);
+	radiusDelta[i]=sqrt(pow(deltP[i],2)+pow(deltA[i],2));
 	//print(paris[i]);
 	}
 
