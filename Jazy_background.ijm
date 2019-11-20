@@ -173,14 +173,15 @@ diff =diff*yheight/(yheight-(yheight/stripw));
 print(diff);
 x = abs(diff/255);
 print(x);
-newImage("T-B-ramp", "8-bit ramp", xwidth, yheight, 1);
+run("Select None");
+newImage("T-B-ramp", "8-bit ramp", yheight, xwidth , 1);
 run("Rotate 90 Degrees Right");
 run("Multiply...", "value="+x+"");
 if (diff<0){
 	run("Flip Vertically");
 	}
 
-imageCalculator("Subtract create", fname ,"T-B-ramp");
+imageCalculator("Subtract create 32-bit", fname ,"T-B-ramp");
 run("8-bit");
 run("Histogram");
 }
@@ -334,14 +335,14 @@ diff_TB =diff_TB*yheight/(yheight-(yheight/stripw));
 print(diff_TB);
 xTB = abs(diff_TB/255);
 print(xTB);
-newImage("T-B-ramp", "8-bit ramp", xwidth, yheight, 1);
+newImage("T-B-ramp", "8-bit ramp", yheight, xwidth, 1);
 run("Rotate 90 Degrees Right");
 run("Multiply...", "value="+xTB+"");
 if (diff_TB<0){
 	run("Flip Vertically");
 	}
 
-imageCalculator("Subtract create", fname ,"T-B-ramp");
+imageCalculator("Subtract create 32-bit", fname ,"T-B-ramp");
 run("8-bit");
 
 
@@ -368,7 +369,7 @@ if (diff_LR>0){
 	run("Flip Horizontally");
 	}
 
-imageCalculator("Subtract create", fname ,"L-R-ramp");
+imageCalculator("Subtract create 32-bit", fname ,"L-R-ramp");
 run("8-bit");
 
 }
@@ -497,7 +498,7 @@ run("Invert");
 getStatistics(area,mean,min,max);
 run("Subtract...", "value="+min+"");
 
-imageCalculator("Subtract create", fname ,"backg");
+imageCalculator("Subtract create 32-bit", fname ,"backg");
 run("8-bit");
 
 }
