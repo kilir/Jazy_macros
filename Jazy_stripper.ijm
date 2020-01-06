@@ -266,12 +266,12 @@ for (i=0;i<lengthOf(bcp);i++){
 
 Plot.create("Histogram","eq. diameter","%");
 Plot.setLineWidth(2);
-Plot.setColor("red", "black");
-Plot.add("connected", bcp, hdp);
-Plot.setColor("blue", "black");
-Plot.add("connected", bcp, hDp);
-Plot.setColor("green", "black");
-Plot.add("connected",  bcp, vDp);
+Plot.setColor("red");
+Plot.add("Separated Bars", bcp, hdp);
+Plot.setColor("blue");
+Plot.add("Separated Bars", bcp, hDp);
+Plot.setColor("green");
+Plot.add("Separated Bars",  bcp, vDp);
 Plot.setLimits(0,NaN,0,NaN);
 Plot.setLegend("h(d)\th(D)\tv(D)", "Auto");
 Plot.setFontSize(18);
@@ -340,8 +340,8 @@ for (i=0;i<lengthOf(x);i++){
 // get the mode and plot it
 Plot.create("Fit","eq. diameter","pdf");
 Plot.setLineWidth(2);
-Plot.setColor("red", "black");
-//add zeros  and otehr padding just for plotting
+Plot.setColor("red");
+//add zeros  and other padding just for plotting
 bcpad1 = newArray(1);
 bcpad2 = newArray(1);
 bcpad1[0] = bincenter[0]-(ded/2);
@@ -349,7 +349,7 @@ bcpad2[0] = bincenter[n-1]+(ded/2);
 bcplot = Array.concat(bcpad1,bincenter,bcpad2);
 z=newArray(1);
 vDplot = Array.concat(z,vD,z);
-Plot.add("connected",bcplot ,vDplot);
+Plot.add("Separated Bars",bcplot ,vDplot);
 Plot.setColor("blue", "black");
 Plot.add("line", x, gtot);
 
