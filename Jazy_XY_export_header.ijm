@@ -66,8 +66,8 @@ for (i=0; i<nResults; i++) {
          			print(x[0], -1*y[0]);
         	}
        	print(0, 0);
-	
-	countr = countr+(x.length+1);
+//    	countr = countr+(x.length+1);
+    	countr = countr+j+1;
 }
 countr = countr + i
 print("\\Update 1:"+countr+"");
@@ -140,7 +140,8 @@ for (i=0; i<nResults; i++) {
         	}
        	print( 0, 0);
 	
-	countr = countr+(x.length+1);
+//	countr = countr+(x.length+1);
+	countr = countr+j+1;
 }
 countr = countr + i
 print("\\Update 1:"+countr+"");
