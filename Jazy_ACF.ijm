@@ -1122,7 +1122,7 @@ min = Dialog.getNumber();
 run("Select All");
 factor =255/(255-min);
 run("Add...", "value="+-min+"");
-run("Multiply...", "value="+factor+"");
+run("Divide...", "value="+factor+"");
 }
 
 //-----------------------------------------------------------------------------------------
