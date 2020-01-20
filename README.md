@@ -16,7 +16,7 @@ Jazy_Env_map: 			grain property mapping involving convex hull-related grain shap
 				(properties available so far: Paris factor, delta area, delta perimeter, delta radius)
 						
 
-Jazy_surfor: 			surfor implementation in imageJ, derives the projection function of boundary 
+Jazy_sparfor: 			surfor/paror/sparor implementation in imageJ, derives the projection function of boundary 
 				segments and plot a length weighted segment trend distribution (rose diagram)
 				and the characteristic shape
 						
