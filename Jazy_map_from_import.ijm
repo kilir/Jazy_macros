@@ -105,7 +105,17 @@ luttype = Dialog.getChoice;
 run("Set Scale...", "pixel=1 unit=pixel");
 run("Clear Results");
 run("Set Measurements...", "area perimeter redirect=None decimal=3");
+
+Dialog.create("Exclude edges");
+Dialog.addMessage("Exclude particles touching the edges?"); 
+Dialog.addCheckbox("Yes", true)
+Dialog.show;
+choice =  Dialog.getCheckbox();
+if (choice==true){
 run("Analyze Particles...", "size=0-Infinity circularity=0.00-1.00 show=Nothing exclude clear record");
+} else{
+run("Analyze Particles...", "size=0-Infinity circularity=0.00-1.00 show=Nothing clear record");
+}
 
 // starting coordinates of each particle - later used for filling
 n=nResults;
