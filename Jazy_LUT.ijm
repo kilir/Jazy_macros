@@ -220,29 +220,26 @@ Dialog.addNumber("(min=2)",num_phase);
 Dialog.show();
 num_phase = Dialog.getNumber();
 getLut(reds,greens,blues);
-
 lim=newArray(num_phase+2);
-
-
 for (i = 1; i <= num_phase; i++){
  	
  	lim[i] = i;
 	Dialog.create("uper limit");
 	Dialog.addMessage("upper limits of phase no."+i+"");
-	Dialog.addNumber("1-254",lim[i]);
+	Dialog.addNumber("1-255",lim[i]);
 	Dialog.show();
 	lim[i] = Dialog.getNumber();
 	}
 	
 print(num_phase);
 Array.print(lim);
-ph_max = num_phase+1
+ph_max = num_phase+1;
 lim[ph_max]=255;
 
-col1 = newArray(0,   0,  0,    0,    137,  255, 255, 255, 255);
-col2 = newArray(0, 255,  0,  198,      0,    0,  93, 190, 255);
-col3 = newArray(0, 73, 255,  255,   227,  229, 117,  93,  85);
-for (i = 0; i <= num_phase; i++){
+col1 = newArray(  0,  0,    0,    137,  255, 255, 255, 255);
+col2 = newArray(255,  0,  198,      0,    0,  93, 190, 255);
+col3 = newArray( 73, 255,  255,   227,  229, 117,  93,  85);
+for (i = 0; i < num_phase; i++){
   	for (j = lim[i]; j<= lim[i+1]; j++){
      		reds[j]=col1[i];
     		greens[j]=col2[i];
@@ -286,7 +283,7 @@ Array.print(lim);
 ph_max = num_phase+1
 lim[ph_max]=255;
 
-for (i = 0; i <= num_phase; i++){
+for (i = 0; i < num_phase; i++){
 	col1 = (lim[i]+lim[i+1])/2;
   	for (j = lim[i]; j<= lim[i+1]; j++){
 	
