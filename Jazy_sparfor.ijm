@@ -390,11 +390,15 @@ maxAx = newArray(xmax,ymax);
 Array.getStatistics(maxAx, min, max);
 lim=max+max/10;
 
+// repeat first point at the end
+xcsh = Array.concat(xsum,xsum[0]);
+ycsh = Array.concat(ysum,ysum[0]);
+
 Plot.create("characteristic shape","","");
 Plot.setFrameSize(512,512);
 Plot.setColor("black");
 Plot.setLineWidth(2);
-Plot.add("line", Array.concat(xsum,xsum[0]) , Array.concat(ysum,ysum[0]));
+Plot.add("line", xcsh , ycsh);
 Plot.setLimits(-lim,lim,-lim,lim);
 Plot.show()
 
@@ -546,9 +550,9 @@ for (i=0; i < deltas_plot.length; i++){
 	setResult("pLength_surf", i,  xproj_plot[i]); // relative total proj. length
 }
 //- - cshape
-for (i=0;i<xsum.length;i++){
-	setResult("cShape_x", i,  xsum[i]); // characteristic shape  
-	setResult("cShape_y", i,  ysum[i]); // characteristic shape
+for (i=0;i<xcsh.length;i++){
+	setResult("cShape_x", i,  xcsh[i]); // characteristic shape  
+	setResult("cShape_y", i,  ycsh[i]); // characteristic shape
 }
 //- - x,y cords incl. empty lines 
 for (i=0; i < xp0.length; i++){
