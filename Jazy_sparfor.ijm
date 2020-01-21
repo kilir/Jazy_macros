@@ -10,15 +10,16 @@ and the particle length normal to the shortest
 Original programs were develope by Renee Heilbronner, see:
 Panozzo, R., 1983. Two-dimensional analysis of shape fabric using projections of digitized 
                    lines in a plane. Tectonophysics, 95: 279-294.
-Panozzo R (1984) Two-dimensional strain from the orientation of lines in a plane. J Struct 
-                  Geol 6:215–221                   
-Some convention: we rotate particles ccw or the coordinate system cw
+Panozzo R., 1984.  Two-dimensional strain from the orientation of lines in a plane. J Struct 
+                   Geol 6:215–221        
+                              
+Convention: we rotate particles ccw or the coordinate system cw
 
 TODO:
 - extract b/a
 - write output automatically to file
-- determine bin positions based on histogram of total length, i.e. estimate maximum first and
-  derive bin center
+- preedined bins positions are actually bad, better to determine bin positions based on 
+  angular frequencies i.e. estimate maximum first and center bins around it
 - use wrapped Gaussian to estimate density from rose plots  
 */
 
@@ -208,13 +209,13 @@ for (i=0;i<xproj.length;i++){ // for each deltas
 // -> sparPL and spardeltaPL
 
 // normalize to 1 surfor projections 
-Array.getStatistics(xproj, min, max) 
+Array.getStatistics(xproj, min, max);
 for (i=0;i<xproj.length;i++){
 xproj[i]=xproj[i]/max;
 }
 
 // normalize to 1 paror projection
-Array.getStatistics(totalPlength, min, max) 
+Array.getStatistics(totalPlength, min, max);
 for (i=0;i<totalPlength.length;i++){
 totalPlength[i]=totalPlength[i]/max;
 }
@@ -286,7 +287,7 @@ for (i=0; i<d.length; i++){
 }
 
 // normalize to 1
-Array.getStatistics(rosed, min, max) 
+Array.getStatistics(rosed, min, max); 
 for (i=0;i<rosed.length;i++){
 	rosed[i]=rosed[i]/max;
 }
@@ -429,17 +430,17 @@ for (i=0; i<sparPL.length; i++){
 }
 
 // normalize paror rose to 1
-Array.getStatistics(rosedPAR, min, max) 
+Array.getStatistics(rosedPAR, min, max); 
 for (i=0;i<rosedPAR.length;i++){
 	rosedPAR[i]=rosedPAR[i]/max;
 }
 // normalize sparor rose to 1
-Array.getStatistics(rosedSPA, min, max) 
+Array.getStatistics(rosedSPA, min, max); 
 for (i=0;i<rosedSPA.length;i++){
 	rosedSPA[i]=rosedSPA[i]/max;
 }
-
-// PAROR :  plot rose diagram ->convert to x,y coords ----------------------------
+//------------------------------------------------------------------------
+// PAROR :  plot rose diagram ->convert to x,y coords --------------------
 // get binscenter
 bincenterSPAR = Array.copy(deltap_binp); // used for both sparor and paror
 for (i=0; i<bincenterSPAR.length;i++){
@@ -461,9 +462,7 @@ for (i=0;i<rosedPAR.length;i++){
 	xSPA[i]=rosedSPA[i]*cos(bincenterSPAR[i]);
 	ySPA[i]=rosedSPA[i]*sin(bincenterSPAR[i]);
 }
-
-//okabv
-
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // add zeros and mirro (becuase it's nice) PAROR
 xp0PAR = newArray(2*xPAR.length);
 yp0PAR = newArray(2*yPAR.length);
@@ -481,6 +480,7 @@ for (i=0;i<xp0mirPAR.length;i++){ // every 2nd entry
 }
 xp0PAR=Array.concat(xp0PAR,xp0mirPAR);
 yp0PAR=Array.concat(yp0PAR,yp0mirPAR);
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // add zeros and mirro (becuase it's nice) SPAROR
 xp0SPA = newArray(2*xSPA.length);
@@ -500,9 +500,7 @@ for (i=0;i<xp0mirSPA.length;i++){ // every 2nd entry
 xp0SPA=Array.concat(xp0SPA,xp0mirSPA);
 yp0SPA=Array.concat(yp0SPA,yp0mirSPA);
 
-
-
-
+//-------------------------------------------------------------------
 // plot PAROR
 Plot.create("PAROR rose diagram (length weighted)","","");
 Plot.setFrameSize(512,512);
@@ -518,7 +516,7 @@ Plot.add("line", az_x, az_y);
 Plot.show()
 
 
-
+//-------------------------------------------------------------------
 // plot SPAROR
 Plot.create("SPAROR rose diagram (length weighted)","","");
 Plot.setFrameSize(512,512);
@@ -541,42 +539,55 @@ Plot.show()
 
 // write output to results
 run("Clear Results");
-// surfor
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// surfor pf
 for (i=0; i < deltas_plot.length; i++){
 	setResult("pAngle_surf", i,  deltas_plot[i]); // angle increaments used for projection
 	setResult("pLength_surf", i,  xproj_plot[i]); // relative total proj. length
 }
+//- - cshape
 for (i=0;i<xsum.length;i++){
 	setResult("cShape_x", i,  xsum[i]); // characteristic shape  
 	setResult("cShape_y", i,  ysum[i]); // characteristic shape
 }
+//- - x,y cords incl. empty lines 
 for (i=0; i < xp0.length; i++){
 	setResult("rose_x_surf", i,  xp0[i]); // x cords of rose diagram
-	setResult("rose_y_surf", i,  xp0[i]); // y coords of rose diagram
+	setResult("rose_y_surf", i,  yp0[i]); // y coords of rose diagram
 }
-for (i=0;i<bincenter.length;i++){
-	setResult("azi_surf", i,  bincenter[i]); // bin centers for rose diagram 
-	setResult("rho_surf", i,  rosed[i]); // binpopulation for rose diagram
+//- - azi, rho incl. empty lines
+for (i=0; i < xp0.length; i++){
+setResult("azi_surf", i,  atan2(yp0[i],xp0[i])*180/PI); // bin centers for rose diagram 
+setResult("rho_surf", i,  sqrt(pow(xp0[i],2)+pow(yp0[i],2))); // binpopulation for rose diagram
 }
-// paror
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// paror pf
 for (i=0; i < deltap_plot.length; i++){
 	setResult("pAngle_par", i,  deltap_plot[i]); // angle increaments used for projection
 	setResult("pLength_par", i,  paror_plot[i]); // relative total proj. length
 }
+//- - x,y cords incl. empty lines 
 for (i=0; i < xp0PAR.length; i++){
 	setResult("rose_x_par", i,  xp0PAR[i]); // x cords of rose diagram
 	setResult("rose_y_par", i,  yp0PAR[i]); // y coords of rose diagram
 }
+//- - azi, rho incl. empty lines
+for (i=0; i < xp0PAR.length; i++){
+	setResult("azi_par", i,  atan2(yp0PAR[i],xp0PAR[i])*180/PI); // x cords of rose diagram
+	setResult("rho_par", i,  sqrt(pow(xp0PAR[i],2)+pow(yp0PAR[i],2))); // y coords of rose diagram
+}
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+//- - x,y cords incl. empty lines 
 for (i=0; i < xp0SPA.length; i++){
 	setResult("rose_x_spa", i,  xp0SPA[i]); // x cords of rose diagram
 	setResult("rose_y_spa", i,  yp0SPA[i]); // y coords of rose diagram
 }
-for (i=0;i<bincenterSPAR.length-1;i++){
-	setResult("azi_par", i,  bincenterSPAR[i]); // bin centers for rose diagram 
-	setResult("rho_par", i,  rosedPAR[i]); // binpopulation for rose diagram
-	setResult("rho_spa", i,  rosedSPA[i]); // binpopulation for rose diagram
+//- - azi, rho incl. empty lines
+for (i=0; i < xp0PAR.length; i++){
+	setResult("azi_spa", i,  atan2(yp0SPA[i],xp0SPA[i])*180/PI); // x cords of rose diagram
+	setResult("rho_spa", i,  sqrt(pow(xp0SPA[i],2)+pow(yp0SPA[i],2))); // y coords of rose diagram
 }
-
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 
 updateResults();

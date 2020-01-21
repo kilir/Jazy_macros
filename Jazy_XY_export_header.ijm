@@ -17,7 +17,6 @@ run("Select None");
 //showMessage("Information" ,"Image will be scaled to pixels. If the macro fails, choose a smaller discard size.");
 //run("Set Scale...", "distance=0 known=0 pixel=1 unit=pixel");
 
-
 var codist = "1"; 
 {
         Dialog.create("coordinate distance");
