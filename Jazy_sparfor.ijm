@@ -17,8 +17,8 @@ Convention: we rotate particles ccw or the coordinate system cw
 
 TODO:
 - extract b/a
-- write output automatically to file
-- preedined bins positions are actually bad, better to determine bin positions based on 
+- write output automatically to file ?
+- predefined bins positions are actually bad, better to determine bin positions based on 
   angular frequencies i.e. estimate maximum first and center bins around it
 - use wrapped Gaussian to estimate density from rose plots  
 */
@@ -592,6 +592,49 @@ for (i=0; i < xp0PAR.length; i++){
 	setResult("rho_spa", i,  sqrt(pow(xp0SPA[i],2)+pow(yp0SPA[i],2))); // y coords of rose diagram
 }
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+
+
+azi=Array.copy(bincenter)
+rho=Array.copy(rosed)
+// compute eigenvalues/vectors
+function eigenthings(azi,rho){
+// returns an array with omega, evx, evy, eval1, eval2
+// compute components
+// a11:     sum(cos^2azi)
+// a12=a21: sum(sin(azi)*cos(azi)
+// a22:     sum(sin^2azi)
+// and since we have weighted data, multiply by factor rho
+
+a11=0;
+a12=0;
+a22=0;
+for (i=0; i<azi.length; i++){
+	a11 = (rho[i]*pow(cos(azi[i]),2))+a11;
+	a12 = (rho[i]*sin(azi[i])*cos(azi[i]))+a12;
+	a22 = rho[i]*pow(sin(azi[i]),2)+a22;
+	}
+p = (a11 + a22)/2;
+D = sqrt((pow(p,2) - (a11 * a22) + pow(a12,2)));
+lambda1 = p + D;
+lambda2 = p - D;
+
+// angle of largest
+omega = atan2(a12,a11 - lambda2);
+if (omega<0){
+    omega=omega+PI;
+}
+if (omega>PI){
+    omega=omega-PI;
+    }
+
+vec1x = cos(omega);
+vec1y = sin(omega);
+results = newArray(omega,vec1x,vec1y,lambda1,lambda2);
+return (results);
+}
+Array.print(results);
 
 
 updateResults();
