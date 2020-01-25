@@ -11,7 +11,8 @@ run("Options...", "iterations=1 count=1 black do=Nothing");
 showMessage("Information" ,"The starting stack must contain 3 slices: \n 1: white surfaces \n 2: white phaseA, \n 3: white phaseB \n \n" +
 "The final stack will have a total of 10 slices:" +
 "\n 1: total surfaces/contacts \n 2: phaseA \n 3: phaseB \n 4: contacts AA \n 5: contacts BB \n 6: surface A " +
-"\n 7: surface B  \n 8: contacts AB \n 9: grains A \n 10: grains B");
+"\n 7: surface B  \n 8: contacts AB \n 9: grains A \n 10: grains B \n \n" + 
+"Note: Phase maps must overlap half of the 2 pixel wide gap between areas");
 
 //check stack
 if ( nSlices != 3){ exit("Stack of 3 required");}
@@ -24,92 +25,102 @@ for (i =1; i <= nSlices; i++){
 Stack.setSlice(3);
 for (i= 1; i<=7; i++){ run("Add Slice");}
 
+
+// contacts AA
 Stack.setSlice(2);
+setMetadata("Label", "phase A");
 run("Select All");
 run("Copy");
 Stack.setSlice(4);
 setPasteMode("Copy");
 run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Dilate slice");
-
-
-Stack.setSlice(6);
-setPasteMode("Copy");
+run("Options...", "iterations=1 count=1 black edm=Overwrite do=Erode slice");
+Stack.setSlice(1);
+run("Invert", "slice"); //----------------here we invert--watch out!
+run("Copy");
+Stack.setSlice(4);
+setPasteMode("AND");
 run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
-
-
-Stack.setSlice(8);
 setPasteMode("Copy");
-run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
+setMetadata("Label", "contacts A-A");
 
-
+// contacts BB
 Stack.setSlice(3);
+setMetadata("Label", "phase B");
 run("Select All");
 run("Copy");
 Stack.setSlice(5);
 setPasteMode("Copy");
 run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=1 black edm=Overwrite do=Erode slice");
+Stack.setSlice(1);
+run("Copy");
+Stack.setSlice(5);
+setPasteMode("AND");
+run("Paste");
+setPasteMode("Copy");
+setMetadata("Label", "contacts B-B");
 
+// surface A
+Stack.setSlice(2);
+run("Select All");
+run("Copy");
+Stack.setSlice(6);
+setPasteMode("Copy");
+run("Paste");
+run("Options...", "iterations=1 count=1 black do=Outline slice");
+Stack.setSlice(4);
+run("Select All");
+run("Copy");
+Stack.setSlice(6);
+setPasteMode("OR");
+run("Paste");
+run("Options...", "iterations=1 count=1 black do=Close slice");
+setMetadata("Label", "surface A");
+
+
+// surface B
+Stack.setSlice(3);
+run("Select All");
+run("Copy");
 Stack.setSlice(7);
 setPasteMode("Copy");
 run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=1 black do=Outline slice");
+Stack.setSlice(5);
+run("Select All");
+run("Copy");
+Stack.setSlice(7);
+setPasteMode("OR");
+run("Paste");
+run("Options...", "iterations=1 count=1 black do=Close slice");
+setMetadata("Label", "surface B");
 
+
+// contacts AB
+Stack.setSlice(3);
+run("Select All");
+run("Copy");
+Stack.setSlice(8);
+setPasteMode("Copy");
+run("Paste");
+run("Options...", "iterations=1 count=1 black do=Dilate slice");
+Stack.setSlice(2);
+run("Select All");
+run("Copy");
+Stack.setSlice(8);
+setPasteMode("AND");
+run("Paste");
+setMetadata("Label", "contacts AB");
+setPasteMode("Copy");
+
+// grains A
 Stack.setSlice(1);
 run("Select All");
 run("Copy");
 Stack.setSlice(9);
-setPasteMode("Copy");
 run("Paste");
 run("Invert", "slice");
-
-Stack.setSlice(10);
-setPasteMode("Copy");
-run("Paste");
-run("Invert", "slice");
-
-
-Stack.setSlice(5);
-run("Select All");
-run("Copy");
-Stack.setSlice(8);
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "contacts A-B");
-
-
-Stack.setSlice(1);
-run("Select All");
-run("Copy");
-Stack.setSlice(4);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "contacts A-A");
-
-
-Stack.setSlice(5);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "contacts B-B"); 
-
-
-Stack.setSlice(6);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "surface A");
-
-
-Stack.setSlice(7);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "surface B");
-
-
-
 Stack.setSlice(2);
 run("Select All");
 run("Copy");
@@ -117,17 +128,28 @@ Stack.setSlice(9);
 setPasteMode("AND");
 run("Paste");
 setMetadata("Label", "grains A");
+setPasteMode("Copy");
 
-
+// grains B
+Stack.setSlice(1);
+run("Select All");
+run("Copy");
+Stack.setSlice(10);
+run("Paste");
+run("Invert", "slice");
 Stack.setSlice(3);
 run("Select All");
 run("Copy");
 Stack.setSlice(10);
 setPasteMode("AND");
 run("Paste");
-setMetadata("Label", "grains B"); 
+setMetadata("Label", "grains B");
 
+
+Stack.setSlice(1);
+run("Invert", "slice");
 setPasteMode("Copy");
+
 }
 }
 
@@ -137,138 +159,33 @@ setPasteMode("Copy");
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
-macro "boundaries from phasemaps -> 1px  [B]"{
+macro "prep stack for evaluation [B]"{
 
 run("Options...", "iterations=1 count=1 black do=Nothing");
-showMessage("Information" ,"The starting stack must contain 3 slices: \n 1: white surfaces \n 2: white phaseA, \n 3: white phaseB \n \n" +
-"The final stack will have a total of 10 slices:" +
+showMessage("Information" ,"This macro assumes that your stack has: \n \n" +
 "\n 1: total surfaces/contacts \n 2: phaseA \n 3: phaseB \n 4: contacts AA \n 5: contacts BB \n 6: surface A " +
 "\n 7: surface B  \n 8: contacts AB \n 9: grains A \n 10: grains B \n" +
 " \n Boundaries will be 1 px thick, use to count line length.");
 
 //check stack
-if ( nSlices != 3){ exit("Stack of 3 required");}
-else {
-for (i =1; i <= nSlices; i++){
-	Stack.setSlice(i);
-	if(is("binary") == 1){
-	}else{ exit("Binary stack required");}
-	}
-Stack.setSlice(3);
-for (i= 1; i<=7; i++){ run("Add Slice");}
-
-Stack.setSlice(2);
-run("Select All");
-run("Copy");
-Stack.setSlice(4);
-setPasteMode("Copy");
-run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Dilate slice");
-
-Stack.setSlice(6);
-setPasteMode("Copy");
-run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
-
-
-Stack.setSlice(8);
-setPasteMode("Copy");
-run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
-
-Stack.setSlice(3);
-run("Select All");
-run("Copy");
-Stack.setSlice(5);
-setPasteMode("Copy");
-run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Dilate slice");
-
-Stack.setSlice(7);
-setPasteMode("Copy");
-run("Paste");
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
-
+if ( nSlices != 10){ exit("Stack of 3 required \n \n" +
+"Your stack only has " + nSlices + " slice(s)  ");}
+// skeletonize proper slices
 Stack.setSlice(1);
-run("Select All");
-run("Options...", "iterations=1 count=1 black do=Skeletonize");
-setMetadata("Info", "Skeletonized");
-run("Copy");
-Stack.setSlice(9);
-setPasteMode("Copy");
-run("Paste");
 run("Invert", "slice");
-
-Stack.setSlice(10);
-setPasteMode("Copy");
-run("Paste");
-run("Invert", "slice");
-
-Stack.setSlice(5);
-run("Select All");
-run("Copy");
-Stack.setSlice(8);
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
-setPasteMode("AND");
-run("Paste");
-run("Options...", "iterations=1 count=1 black do=Skeletonize slice");
-setMetadata("Label", "contacts A-B");
-
-Stack.setSlice(1);
-run("Select All");
-run("Copy");
-Stack.setSlice(4);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "contacts A-A");
-
-
-Stack.setSlice(5);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "contacts B-B"); 
-
-
-Stack.setSlice(6);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "surface A");
-
-
-Stack.setSlice(7);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "surface B");
-
-
-Stack.setSlice(2);
-run("Select All");
-run("Copy");
-Stack.setSlice(9);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "grains A");
-
-
-Stack.setSlice(3);
-run("Select All");
-run("Copy");
-Stack.setSlice(10);
-setPasteMode("AND");
-run("Paste");
-setMetadata("Label", "grains B"); 
-
-setPasteMode("Copy");
+sl = newArray(1,4,5,6,7,8);
+for (i=0;i<sl.length;i++){
+	Stack.setSlice(sl[i]);
+	run("Options...", "iterations=1 count=1 black do=Skeletonize slice");
 }
+Stack.setSlice(1);
+setMetadata("Label", "Skeletonized boundaries (all)");
 }
 
-
-
-
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
-macro "Make 3 slices stack from 2 [C]"{
+macro "Make 3 slices stack from stack of 2 [C]"{
 	showMessage("Append a third slice, being the inverted of slice 2");
 //check stack
 if ( nSlices > 2){ showMessage("Stack has more than 2 slices. Are you sure you want to add another slice?");}
@@ -306,21 +223,21 @@ run("Options...", "iterations=1 count=8 edm=Overwrite black do=Erode");
 }
 
 
-macro "dilate image even more (4)... [E]"{
+macro "dilate image even more (4)... [e]"{
 run("Options...", "iterations=1 count=4 edm=Overwrite black do=Dilate");
 }
 
-macro "dilate image more (5)... [D]"{
+macro "dilate image more (5)... [d]"{
 run("Options...", "iterations=1 count=5 edm=Overwrite black do=Dilate");
 }
 
-macro "dilate image (6)... [F]"{
+macro "dilate image (6)... [f]"{
 run("Options...", "iterations=1 count=6 edm=Overwrite black do=Dilate");
 }
-macro "dilate image a little (7)... [G]"{
+macro "dilate image a little (7)... [g]"{
 run("Options...", "iterations=1 count=7 edm=Overwrite black do=Dilate");
 }
-macro "dilate image weakest (8)... [H]"{
+macro "dilate image weakest (8)... [h]"{
 run("Options...", "iterations=1 count=8 edm=Overwrite black do=Dilate");
 }
 
@@ -351,60 +268,16 @@ for (i=0; i<nSlices; i++){
 }
 allpx=nPixels;
 
+// get number fractions of phases
+Stack.setSlice(9);
+run("Set Measurements...", "mean redirect=None decimal=5");
+run("Analyze Particles...", "clear slice");
+nA=nResults();
+Stack.setSlice(10);
+run("Set Measurements...", "mean redirect=None decimal=5");
+run("Analyze Particles...", "clear slice");
+nB=nResults();
 
-// get number fractions
-// work around: since we cannot assume that particles4. class will be installed everywhere
-// just copy paste, thicken line and destroy
-// for some reason this need to move prior to loggin-> log window is cleared
-// check IF we have a skeletonized stack -based on metadata inserted in macro B
-Stack.setSlice(1);
-if (startsWith(getMetadata("Info"), "Skeletonized")) {
-autoUpdate(false);
-setBatchMode(true);
-Stack.setSlice(9);
-run("Duplicate...", "use");
-// thicken lines
-run("Select All");
-run("Copy");
-setPasteMode("AND");
-setSelectionLocation(1,0);
-run("Paste");
-setSelectionLocation(0,1);
-run("Paste");
-setPasteMode("COPY");
-run("Set Measurements...", "mean redirect=None decimal=5");
-run("Analyze Particles...", "clear slice");
-nA=nResults();
-run("Close");
-selectWindow(otit);
-Stack.setSlice(10);
-run("Duplicate...", "use");
-run("Select All");
-run("Copy");
-setPasteMode("AND");
-setSelectionLocation(1,0);
-run("Paste");
-setSelectionLocation(0,1);
-run("Paste");
-setPasteMode("COPY");
-run("Set Measurements...", "mean redirect=None decimal=5");
-run("Analyze Particles...", "clear slice");
-nB=nResults();
-run("Close");
-autoUpdate(true);
-setBatchMode(false);
-selectWindow(otit);
-}
-else{
-Stack.setSlice(9);
-run("Set Measurements...", "mean redirect=None decimal=5");
-run("Analyze Particles...", "clear slice");
-nA=nResults();
-Stack.setSlice(10);
-run("Set Measurements...", "mean redirect=None decimal=5");
-run("Analyze Particles...", "clear slice");
-nB=nResults();
-}
 nPart = newArray(1);
 nPart[0] = nA/(nA+nB);
 
