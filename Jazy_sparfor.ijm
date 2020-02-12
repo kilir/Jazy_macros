@@ -338,8 +338,9 @@ for (i=0;i<az.length;i++){
 	az_x[i] = cos(az[i]/180*PI);
 	az_y[i] = sin(az[i]/180*PI);
 }
-// ---------------------------------
+//---------------------------------------------
 
+//
 Plot.create("surface segments rose diagram (length weighted)","","");
 Plot.setFrameSize(512,512);
 Plot.setLimits(-1,1,-1, 1);
@@ -351,7 +352,10 @@ Plot.setFormatFlags("0");
 Plot.setFontSize(0.0);
 Plot.setAxisLabelSize(12.0, "plain");
 Plot.add("line", az_x, az_y);
-Plot.show()
+//Plot.setColor("red");
+//Plot.setLineWidth(2);
+//Plot.add("Cross",newArray(evarray_surfor[1]),newArray(evarray_surfor[2]));
+Plot.show();
 
 //-----------------------------------------------------------------
 // characteristic shape SURFOR
@@ -537,7 +541,38 @@ Plot.show()
 
 
 //-------------------------------------------------------------------
-// compute b/a, assymmetry etc
+// TODO compute b/a, assymmetry etc 
+
+// eigenvalues
+// eigenvalues surfor
+evarray_surfor=eigenthings(bincenter,rosed);
+//Array.print(evarray_surfor);
+// omega (angle of largest ev), evx, evy, eval1, eval2
+print("------surfor rose diagram stats------");
+print("direction of largest eigenvalue: " +evarray_surfor[0]*180/PI);
+print("eigenvalues raw:" +evarray_surfor[3]+ " / " +evarray_surfor[4]);
+print("-------------------------------------");
+
+// eigenvalues paror
+bincenterSPAR60 = Array.slice(bincenterSPAR,0,bincenterSPAR.length-1);
+
+evarray_paror=eigenthings(bincenterSPAR60,rosedPAR);
+//Array.print(evarray_paror);
+// omega (angle of largest ev), evx, evy, eval1, eval2
+print("------paror rose diagram stats------");
+print("direction of largest eigenvalue: " +evarray_paror[0]*180/PI);
+print("eigenvalues raw:" +evarray_paror[3]+ " / " +evarray_paror[4]);
+print("-------------------------------------");
+
+// eigenvalues sparor
+evarray_sparor=eigenthings(bincenterSPAR60,rosedSPA);
+//Array.print(evarray_sparor);
+// omega (angle of largest ev), evx, evy, eval1, eval2
+print("------sparor rose diagram stats------");
+print("direction of largest eigenvalue: " +evarray_sparor[0]*180/PI);
+print("eigenvalues raw:" +evarray_sparor[3]+ " / " +evarray_sparor[4]);
+print("-------------------------------------");
+
 
 //-------------------------------------------------------------------
 
@@ -594,49 +629,41 @@ for (i=0; i < xp0PAR.length; i++){
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 
+updateResults();
+selectWindow("Results");
 
 
-azi=Array.copy(bincenter)
-rho=Array.copy(rosed)
-// compute eigenvalues/vectors
 function eigenthings(azi,rho){
-// returns an array with omega, evx, evy, eval1, eval2
+	// compute eigenvectors/values
+// returns an array with omega (angle of largest ev), evx, evy, eval1, eval2
 // compute components
 // a11:     sum(cos^2azi)
 // a12=a21: sum(sin(azi)*cos(azi)
 // a22:     sum(sin^2azi)
 // and since we have weighted data, multiply by factor rho
-
-a11=0;
-a12=0;
-a22=0;
-for (i=0; i<azi.length; i++){
-	a11 = (rho[i]*pow(cos(azi[i]),2))+a11;
-	a12 = (rho[i]*sin(azi[i])*cos(azi[i]))+a12;
-	a22 = rho[i]*pow(sin(azi[i]),2)+a22;
+	a11=0;
+	a12=0;
+	a22=0;
+	for (i=0; i<azi.length; i++){
+		a11 = (rho[i]*pow(cos(azi[i]),2))+a11;
+		a12 = (rho[i]*sin(azi[i])*cos(azi[i]))+a12;
+		a22 = rho[i]*pow(sin(azi[i]),2)+a22;
 	}
-p = (a11 + a22)/2;
-D = sqrt((pow(p,2) - (a11 * a22) + pow(a12,2)));
-lambda1 = p + D;
-lambda2 = p - D;
-
-// angle of largest
-omega = atan2(a12,a11 - lambda2);
-if (omega<0){
-    omega=omega+PI;
-}
-if (omega>PI){
-    omega=omega-PI;
+	p = (a11 + a22)/2;
+	D = sqrt((pow(p,2) - (a11 * a22) + pow(a12,2)));
+	lambda1 = p + D;
+	lambda2 = p - D;
+	// angle of largest
+	omega = atan2(a12,a11 - lambda2);
+	if (omega<0){
+  		omega=omega+PI;
+	}
+	if (omega>PI){
+    	omega=omega-PI;
     }
-
-vec1x = cos(omega);
-vec1y = sin(omega);
-results = newArray(omega,vec1x,vec1y,lambda1,lambda2);
-return (results);
+	vec1x = cos(omega);
+	vec1y = sin(omega);
+	results = newArray(omega,vec1x,vec1y,lambda1,lambda2);
+	return results;
 }
-Array.print(results);
-
-
-updateResults();
-selectWindow("Results");
 }
