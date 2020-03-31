@@ -4,7 +4,7 @@ Some macros for imageJ to assist with image analysis related tasks
 
 Jazy_stripper: 			stripstar implementation used to deduce distributions of spheres from 
 			        distributions of 2D cross secional areas
-				(Bonus: plots distributions and determines the 3D mode using simple a kde)
+				(Bonus: plots distributions and determines the 3D mode using a simple kde)
 			   			
 
 Jazy_whatever_map:		grain property mapping from binary grain maps (properties available so far: area,  
