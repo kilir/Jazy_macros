@@ -105,7 +105,7 @@ for (i=0;i<nBins;i++){
 	}
 	
 // find index of largest non-zero entry in countArray -1 
-inonzero = lengthOf(CountArray)-1;
+inonzero = lengthOf(CountArray);//-1;
 do {
    inonzero = inonzero-1;
    } while(CountArray[inonzero] == 0);
@@ -241,17 +241,13 @@ for (i=0;i<=inonzero;i++){
 updateResults();
 // draw a histogram pad with 0 or with bc at 0
 
-bcp=newArray(inonzero+1);
-hdp=newArray(inonzero+1);
-hDp=newArray(inonzero+1);
-vDp=newArray(inonzero+1);
-for (i=1;i<inonzero+1;i++){
-	hdp[i] = CountArray[i-1];
-	hDp[i] = f[i-1];
-	vDp[i] = fvol[i-1];
-	bcp[i] = bc[i-1];
-	}
-	
+z = newArray(1);	
+bcp = Array.concat(z,bc);
+hdp = Array.concat(z,CountArray);
+hDp = Array.concat(z,f);
+vDp = Array.concat(z,fvol);
+
+
 bcp[0]=bc[0]-(ded/2);
 // check if smaller 0
 for (i=0;i<lengthOf(bcp);i++){
@@ -259,10 +255,6 @@ for (i=0;i<lengthOf(bcp);i++){
 		bcp[i]=0;
 		}
 	}
-
-	
-//Array.print(bcp);
-//Array.print(vDp);
 
 Plot.create("Histogram","eq. diameter","%");
 Plot.setLineWidth(2);
