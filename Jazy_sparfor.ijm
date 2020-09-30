@@ -108,7 +108,7 @@ for (i=0; i<nPart; i++) {
     // PAROR/SPAROR
     // rotate coordiantes from temp array
     pLengthx = newArray(deltap.length); // array for the projection lengths of each particle
-    for (j=0; j<deltap.length; j++){ // iterate through angles, should return an array of projection length
+    for (j=0; j<deltap.length; j++){  // iterate through angles, should return an array of projection length
      	x_rot=newArray(x.length);    
      		for (k=0; k<x.length; k++){ // rotate all coordiantes
          			x_rot[k] = cos(deltap[j])*x[k] + sin(deltap[j])* y[k];
