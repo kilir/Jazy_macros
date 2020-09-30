@@ -4,7 +4,7 @@
 //---------------------------------------------ImageJ--------------------------------------
 // todo : holes will not be filled, however, maybe one could ask the user if this is desired
 
-/*
+
 macro "invert inverted LUT [z]"{
 run("Invert LUT");
 run("Invert");
@@ -16,7 +16,7 @@ run("Invert");
 
 macro "whatevera map [a]"
 {
-*/
+
 //function calc_filcol(fval,user_max_val,user_min_val)
 // shoudl calculate a color within the range
 // maxC-minC, e.g. 1-255 or 0-254
