@@ -31,7 +31,7 @@ Dialog.create("Correct perimeter?");
 setThreshold(255,255);
 run("Options...", "iterations=1 count=2 black do=Nothing");
 run("Set Measurements...", "area perimeter redirect=None decimal=3");
-run("Analyze Particles...", "size=1-Infinity display clear");
+run("Analyze Particles...", "size=0-Infinity display clear");
 
 // now set the result table
 eqdia = newArray(nResults);
