@@ -180,7 +180,6 @@ run("Multiply...", "value="+x+"");
 if (diff<0){
 	run("Flip Vertically");
 	}
-
 imageCalculator("Subtract create 32-bit", fname ,"T-B-ramp");
 run("8-bit");
 run("Histogram");
@@ -400,6 +399,7 @@ theight = yheight/stripw;
 //run("Set Measurements...", " mean redirect=None decimal=3");
 //get all means
 a_mean = newArray(stripw*stripw+1);
+count = 0;
 for (i=1; i<= stripw; i++){
 		for (j=1; j<=stripw; j++){
 		count = count+1;
