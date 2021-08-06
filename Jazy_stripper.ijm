@@ -22,6 +22,7 @@ Version 0.0.6a
 requires("1.50n")
 macro "stripper [S]" {
 
+
 Dialog.create("Correct perimeter?");
   items = newArray("area+perim", "area");
   Dialog.addRadioButtonGroup("Choose area definition", items, 2, 1, "area+perim");
@@ -35,9 +36,25 @@ run("Analyze Particles...", "size=0-Infinity display clear");
 
 // now set the result table
 eqdia = newArray(nResults);
+
+
+//silly thing to get the scaling
+info = getImageInfo();
+index1 = indexOf(info, "Resolution: ");
+scale=1
+    if(index1!=-1){
+       index2 = indexOf(info, "\n", index1);
+       line = substring(info, index1+12, index2);
+       words = split(line, "");
+       scale = 0+words[0];
+       }; // from units to pixels
+       
+       
 if(eqDType == "area+perim"){
 for (i=0;i<nResults;i++){
-	eqdia[i] = 2*sqrt( ( (getResult("Area",i)) + (getResult("Perim.",i)) ) /PI);
+	areaS = pow(scale,2) * getResult("Area",i);
+	perimS = scale * getResult("Perim.",i);
+	eqdia[i] = 2*sqrt( ( areaS + perimS ) /PI) / scale;
 	setResult("EqDia", i, eqdia[i]);
 	};
 } else {
