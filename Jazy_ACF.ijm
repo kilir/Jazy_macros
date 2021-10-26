@@ -984,7 +984,7 @@ setBatchMode(true);
 
 newImage("ACF_stack", "8-bit white", center, center, nx*ny);
 newImage("temp", "8-bit white", grid_size, grid_size, 1);
-
+lc = 0;
 for (i=1; i<=nx; i++){
 	
 	for (j=1; j<=ny; j++){
