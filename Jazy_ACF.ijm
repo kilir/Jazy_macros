@@ -1179,6 +1179,19 @@ run("Set Measurements...", "area center perimeter fit shape  invert redirect=Non
 run("Analyze Particles...", "size=0-Infinity circularity=0.00-1.00 show=Nothing display exclude record add stack");
 }
 
+
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+
+macro "area_percentage [p]" {
+// measure
+run("Set Measurements...", "area redirect=None decimal=3");
+run("Measure");
+// output to results
+setResult("mFrac", nResults-1, getResult("Area")/(getWidth() * getHeight())*100);
+}
+
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
