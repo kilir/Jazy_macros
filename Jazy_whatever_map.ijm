@@ -113,7 +113,6 @@ run("Clear Results");
 
 run("Set Measurements...", "area center perimeter fit shape redirect=None decimal=5");
 run("Analyze Particles...", "size=0-Infinity circularity=0.00-1.00 show=Nothing exclude clear record add");
-
 // starting coordinates of each particle - later used for filling
 n=roiManager("count");
 xstart = newArray(n);
@@ -240,9 +239,12 @@ for (i=0; i<roiManager("count"); i++){
 
         fval = getResult(qtype);
         
-		if (maptype =="Diameter" || maptype =="DiameterCorr"){
+		if (maptype =="Diameter"){
         	fval = 2* sqrt(fval/PI);
-		} 
+		}
+		if (maptype =="DiameterCorr"){
+        	fval = 2 * sqrt(val[i]/PI); // TODO
+		}	
 		if (maptype =="ShapeFactor1"){
 			fval = pow((1/fval),2);
 		}
@@ -253,8 +255,15 @@ for (i=0; i<roiManager("count"); i++){
         filcol = calc_filcol(fval,user_max_val,user_min_val,maxC,minC);
         //print(filcol);
         setForegroundColor(filcol, filcol, filcol);
-    	floodFill(xstart[i],ystart[i]);
-        //roiManager("Fill");
+    	//floodFill(xstart[i],ystart[i]);
+        roiManager("Fill");
+
+	   // write out results
+	   setResult(maptype,i,fval);
+       }
+updateResults();
+
+        
 	}
 
 
