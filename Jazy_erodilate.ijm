@@ -4,53 +4,53 @@
 //-----------------------------------------------------------------------------------------
 
 macro "erode image strongest [1]"{
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=1 edm=Overwrite black do=Erode slice");
 }
 macro "erode image ... [2]"{
-run("Options...", "iterations=1 count=2 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=2 edm=Overwrite black do=Erode slice");
 }
 macro "erode image ... [3]"{
-run("Options...", "iterations=1 count=3 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=3 edm=Overwrite black do=Erode slice");
 }
 macro "erode image ... [4]"{
-run("Options...", "iterations=1 count=4 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=4 edm=Overwrite black do=Erode slice");
 }
 macro "erode image ... [5]"{
-run("Options...", "iterations=1 count=5 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=5 edm=Overwrite black do=Erode slice");
 }
 macro "erode image ... [6]"{
-run("Options...", "iterations=1 count=6 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=6 edm=Overwrite black do=Erode slice");
 }
 macro "erode image ... [7]"{
-run("Options...", "iterations=1 count=7 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=7 edm=Overwrite black do=Erode slice");
 }
 macro "erode image weakest [8]"{
-run("Options...", "iterations=1 count=8 edm=Overwrite do=Erode slice");
+run("Options...", "iterations=1 count=8 edm=Overwrite black do=Erode slice");
 }
 
 macro "dilate image strongest [a]"{
-run("Options...", "iterations=1 count=1 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=1 edm=Overwrite black do=Dilate slice");
 }
 macro "dilate image ... [b]"{
-run("Options...", "iterations=1 count=2 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=2 edm=Overwrite black do=Dilate slice");
 }
 macro "dilate image ... [c]"{
-run("Options...", "iterations=1 count=3 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=3 edm=Overwrite black do=Dilate slice");
 }
 macro "dilate image ... [d]"{
-run("Options...", "iterations=1 count=4 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=4 edm=Overwrite black do=Dilate slice");
 }
 macro "dilate image ... [e]"{
-run("Options...", "iterations=1 count=5 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=5 edm=Overwrite black do=Dilate slice");
 }
 macro "dilate image ... [f]"{
-run("Options...", "iterations=1 count=6 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=6 edm=Overwrite black do=Dilate slice");
 }
 macro "dilate image ... [g]"{
-run("Options...", "iterations=1 count=7 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=7 edm=Overwrite black do=Dilate slice");
 }
 macro "dilate image weakest [h]"{
-run("Options...", "iterations=1 count=8 edm=Overwrite do=Dilate slice");
+run("Options...", "iterations=1 count=8 edm=Overwrite black do=Dilate slice");
 }
 
 
@@ -120,7 +120,7 @@ macro "thicken lines [t]"{
 if (nSlices == 1){
 run("Select All");
 run("Copy");
-setPasteMode("OR");
+setPasteMode("AND");
 setSelectionLocation(1,0);
 run("Paste");
 setSelectionLocation(0,1);
@@ -131,10 +131,10 @@ showMessage("single slice image required");}
 
 
 macro "super thicken lines [w]"{
-if (nSlices = 1){
+if (nSlices == 1){
 run("Select All");
 run("Copy");
-setPasteMode("OR");
+setPasteMode("AND");
 setSelectionLocation(1,0);
 run("Paste");
 setSelectionLocation(0,1);
