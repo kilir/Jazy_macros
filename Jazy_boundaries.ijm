@@ -67,6 +67,37 @@ run("Find Edges", "stack");
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
+
+macro "Kompass filter [k]"{
+for (i = 0; i < 7; i++) {
+run("Duplicate...", " ");
+}
+run("Images to Stack", "use");
+run("Convolve...", "text1=[-5 -5 -5\n3 0 3\n3 3 3\n] normalize");
+run("Next Slice [>]");
+run("Convolve...", "text1=[3 -5 -5\n3 0 -5\n3 3 3\n] normalize");
+run("Next Slice [>]");
+run("Convolve...", "text1=[3 3 -5\n3 0 -5\n3 3 -5\n] normalize");
+run("Next Slice [>]");
+run("Convolve...", "text1=[3 3 3\n3 0 -5\n3 -5 -5\n] normalize");
+run("Next Slice [>]");
+run("Convolve...", "text1=[3 3 3\n3 0 3\n-5 -5 -5\n] normalize");
+run("Next Slice [>]");
+run("Convolve...", "text1=[3 3 3\n-5 0 3\n-5 -5 3\n] normalize");
+run("Next Slice [>]");
+run("Convolve...", "text1=[-5 3 3\n-5 0 3\n-5 3 3\n] normalize");
+run("Next Slice [>]");
+run("Convolve...", "text1=[-5 -5 3\n-5 0 3\n3 3 3\n] normalize");
+run("Z Project...", "projection=[Max Intensity]");
+}
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+
+
+
+
+
 macro "sharpen [s]"{
 run("Sharpen", "stack");
 }
@@ -163,7 +194,7 @@ macro "thicken lines [t]"{
 if (nSlices == 1){
 run("Select All");
 run("Copy");
-setPasteMode("AND");
+setPasteMode("OR");
 setSelectionLocation(1,0);
 run("Paste");
 setSelectionLocation(0,1);
@@ -182,7 +213,7 @@ run("Skeletonize", "stack");
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 macro "prune [i]"{
-run("Options...", "iterations=10 count=7 edm=Overwrite do=Erode stack");
+run("Options...", "iterations=10 count=7 edm=Overwrite black do=Erode stack");
 }
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
