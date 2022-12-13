@@ -128,15 +128,22 @@ for (i=0;i<n; i++){
 	    run("Clear Results");
         doWand(x[i],y[i]);
 	    run("Interpolate", "interval=1 smooth"); // makes perim larger than it should be
-	    run("Measure");
-        perim[i]=getResult("Perim.",0);
-        area[i]=getResult("Area",0);
-        run("Clear Results");
+	    //run("Measure");
+        //perim[i]=getResult("Perim.",0);
+        //area[i]=getResult("Area",0);
+        //run("Clear Results");
+	    List.setMeasurements;
+	    perim[i] = List.getValue("Perim.");
+	    area[i] = List.getValue("Area");
+	    List.clear();
 	    doWand(x[i],y[i]);
 	    run("Convex Hull");
-	    run("Measure");
-	    chull[i]=getResult("Perim.",0);
-	    areaP[i]=getResult("Area",0);
+	    //run("Measure");
+	    //chull[i]=getResult("Perim.",0);
+	    //areaP[i]=getResult("Area",0);
+	    List.setMeasurements;
+	    chull[i]=List.getValue("Perim.");
+	    areaP[i]=List.getValue("Area");
 }
 // make sure that chull,areaP is not larger then perim - silly workaround
 for (i=0;i<n; i++){
