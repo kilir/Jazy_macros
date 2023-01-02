@@ -28,6 +28,9 @@ Jazy_sparfor: 			surfor/paror/sparor implementation in imageJ, derives the proje
 
 Jazy_XY_export_header:		produce input file with smoothed, interpolated coordinates of particles from a
 				binary image which can be used in programs such as paror, surfor, ishapes (fortran)
+				
+				
+Jazy_error:			print out errors of volume estimates based on pixel counting of areas.
 
 
 Legacy macros:
