@@ -106,13 +106,6 @@ luttype = Dialog.getChoice;
 
 //--------------------------------measure-something---------------------------------------------------
 
-// in case of adding diameter with perimeter,
-// remember to scale to px - set back further on
-if (maptype =="DiameterCorr"){ 
-	getPixelSize(un, ppx, ppy); // ppx/ppy is units/pixel
-	run("Set Scale...", "pixel=1 unit=pixel");
-	}
-
 run("Clear Results");
 
 run("Set Measurements...", "area center perimeter fit shape redirect=None decimal=5");
@@ -194,9 +187,13 @@ n=nResults;
 // initialize arrays
 val=newArray(n);
 
+// in case of adding diameter with perimeter,
+// rescale to pixels
+getPixelSize(un, ppx, ppy); // ppx/ppy is units/pixel
+
 if (maptype =="DiameterCorr"){
 	for (i=0;i<n; i++){
-    	val[i] = getResult("Area",i)+getResult("Perim.",i); 
+    	val[i] = getResult("Area",i) / pow(ppx,2) + getResult("Perim.",i)/ppx; 
 	}
 } else {
 	for (i=0;i<n; i++){
@@ -275,13 +272,6 @@ updateResults();
 	
 	
 }
-
-// in case the image was scaled to pixel for special map type
-// set it back to units
-if (maptype =="DiameterCorr"){ 
-	run("Set Scale...", "distance=1 known="+ppx+" pixel=1 unit=" +un);
-	}
-
 
 run(luttype);
 getLut(reds, greens, blues);
