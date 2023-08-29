@@ -212,8 +212,8 @@ if (maptype =="Diameter"){
 }
 
 if (maptype =="DiameterCorr"){
-	max=2 * sqrt(max/PI)/ppx;
-	min=2 * sqrt(min/PI)/ppx;
+	max=2 * sqrt(max/PI) * ppx;
+	min=2 * sqrt(min/PI) * ppx;
 }
 
 if (maptype =="ShapeFactor1"){
@@ -252,7 +252,7 @@ for (i=0; i<roiManager("count"); i++){
         	fval = 2* sqrt(fval/PI);
 		}
 		if (maptype =="DiameterCorr"){
-        	fval = 2 * sqrt(val[i]/PI)/ppx;
+        	fval = 2 * sqrt(val[i]/PI) * ppx;
 		}	
 		if (maptype =="ShapeFactor1"){
 			fval = pow((1/fval),2);
