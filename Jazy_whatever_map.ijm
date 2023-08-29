@@ -106,9 +106,13 @@ luttype = Dialog.getChoice;
 
 //--------------------------------measure-something---------------------------------------------------
 
-//getPixelSize(un, ppx, ppy);
-//why do I set scale in px?
-//run("Set Scale...", "pixel=1 unit=pixel");
+// in case of adding diameter with perimeter,
+// remember to scale to px - set back further on
+if (maptype =="DiameterCorr"){ 
+	getPixelSize(un, ppx, ppy); // ppx/ppy is units/pixel
+	run("Set Scale...", "pixel=1 unit=pixel");
+	}
+
 run("Clear Results");
 
 run("Set Measurements...", "area center perimeter fit shape redirect=None decimal=5");
@@ -202,9 +206,14 @@ if (maptype =="DiameterCorr"){
 Array.getStatistics(val, min, max, mean, stdDev);
 	
 // special case for radius
-if (maptype =="Diameter" || maptype =="DiameterCorr"){
+if (maptype =="Diameter"){
 	max=2 * sqrt(max/PI);
 	min=2 * sqrt(min/PI);
+}
+
+if (maptype =="DiameterCorr"){
+	max=2 * sqrt(max/PI)/ppx;
+	min=2 * sqrt(min/PI)/ppx;
 }
 
 if (maptype =="ShapeFactor1"){
@@ -243,7 +252,7 @@ for (i=0; i<roiManager("count"); i++){
         	fval = 2* sqrt(fval/PI);
 		}
 		if (maptype =="DiameterCorr"){
-        	fval = 2 * sqrt(val[i]/PI); // TODO
+        	fval = 2 * sqrt(val[i]/PI)/ppx;
 		}	
 		if (maptype =="ShapeFactor1"){
 			fval = pow((1/fval),2);
@@ -263,7 +272,14 @@ for (i=0; i<roiManager("count"); i++){
        }
 updateResults();
 
-        
+	
+	
+}
+
+// in case the image was scaled to pixel for special map type
+// set it back to units
+if (maptype =="DiameterCorr"){ 
+	run("Set Scale...", "distance=1 known="+ppx+" pixel=1 unit=" +un);
 	}
 
 
@@ -280,10 +296,10 @@ setMetadata("Label", maptype);
 //run("Invert");
 run("Remove Overlay");
 
-print(minC);
-print(maxC);
-print(user_min_val);
-print(user_max_val);
+//print(minC);
+//print(maxC);
+//print(user_min_val);
+//print(user_max_val);
 
 if (minC > 0){
    minC= minC;
