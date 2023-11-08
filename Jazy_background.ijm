@@ -494,7 +494,7 @@ if (y_s == yheight){
 makeRectangle(sel_x,sel_y,xwidth,yheight);
 run("Duplicate...", "title=backg");
 run("Multiply...", "value="+x+"");
-run("Invert");
+//run("Invert");
 getStatistics(area,mean,min,max);
 run("Subtract...", "value="+min+"");
 
