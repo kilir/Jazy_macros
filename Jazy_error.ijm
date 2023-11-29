@@ -19,8 +19,8 @@ macro "relative Error [E]" {
 
 	// compute error
 	er1 = sqrt( pow(std/mean,2) +1 ) / sqrt(n); // relative error in fraction
-	er2 = sqrt( pow(2*std/mean,2) +1 ) / sqrt(n); // relative error in fraction
-	er3 = sqrt( pow(3*std/mean,2) +1 ) / sqrt(n); // relative error in fraction
+	er2 = 2*sqrt( pow(std/mean,2) +1 ) / sqrt(n); // relative error in fraction
+	er3 = 3*sqrt( pow(std/mean,2) +1 ) / sqrt(n); // relative error in fraction
 	
 	print(">>----------------------------------------------------------------------<<");
 	print("all pixels:" +histcounts[1]);
@@ -63,8 +63,8 @@ macro "rel. Error Pcorr [C]" {
 
 	// compute error
 	er1 = sqrt( pow(std/mean,2) +1 ) / sqrt(n); // relative error in fraction
-	er2 = sqrt( pow(2*std/mean,2) +1 ) / sqrt(n); // relative error in fraction
-	er3 = sqrt( pow(3*std/mean,2) +1 ) / sqrt(n); // relative error in fraction
+	er2 = 2*sqrt( pow(std/mean,2) +1 ) / sqrt(n); // relative error in fraction
+	er3 = 3*sqrt( pow(std/mean,2) +1 ) / sqrt(n); // relative error in fraction
 	
 	print(">>----------------------------------------------------------------------<<");
 	print("all pixels (perim. corrected):" +areaC_tot);
