@@ -132,18 +132,18 @@ for (i=0;i<n; i++){
         //perim[i]=getResult("Perim.",0);
         //area[i]=getResult("Area",0);
         //run("Clear Results");
-	    List.setMeasurements;
-	    perim[i] = List.getValue("Perim.");
-	    area[i] = List.getValue("Area");
-	    List.clear();
+	    List.setMeasurements; //
+	    perim[i] = List.getValue("Perim."); //
+	    area[i] = List.getValue("Area"); //
+	    List.clear(); //
 	    doWand(x[i],y[i]);
 	    run("Convex Hull");
 	    //run("Measure");
 	    //chull[i]=getResult("Perim.",0);
 	    //areaP[i]=getResult("Area",0);
-	    List.setMeasurements;
-	    chull[i]=List.getValue("Perim.");
-	    areaP[i]=List.getValue("Area");
+	    List.setMeasurements; //
+	    chull[i]=List.getValue("Perim."); //
+	    areaP[i]=List.getValue("Area"); //
 }
 // make sure that chull,areaP is not larger then perim - silly workaround
 for (i=0;i<n; i++){
