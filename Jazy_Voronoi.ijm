@@ -8,7 +8,7 @@
 macro "boundaries from phasemaps [A]"{
 
 run("Options...", "iterations=1 count=1 black do=Nothing");
-showMessage("Information" ,"The starting stack must contain 3 slices: \n 1: white surfaces \n 2: white phaseA, \n 3: white phaseB \n \n" +
+showMessage("Information" ,"The starting stack must contain 3 slices: \n 1: black surfaces \n 2: white phaseA, \n 3: white phaseB \n \n" +
 "The final stack will have a total of 10 slices:" +
 "\n 1: total surfaces/contacts \n 2: phaseA \n 3: phaseB \n 4: contacts AA \n 5: contacts BB \n 6: surface A " +
 "\n 7: surface B  \n 8: contacts AB \n 9: grains A \n 10: grains B \n \n" +
