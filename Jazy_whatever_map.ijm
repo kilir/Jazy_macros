@@ -176,7 +176,7 @@ if (maptype =="ElliLength"){ //----------------------------ElliLength---[0 - ++1
 	}
 
 if (maptype =="ShapeFactor1"){ //----------------------------ShapeFactor1---[1 - ++]------------------------------------------------
-	qtype = "Circ.";
+	qtype = "Nan";
 	maxval = 0;
 	minval = 100;
 	}
@@ -195,10 +195,17 @@ if (maptype =="DiameterCorr"){
 	for (i=0;i<n; i++){
     	val[i] = getResult("Area",i) / pow(ppx,2) + getResult("Perim.",i)/ppx; 
 	}
-} else {
+
+}else if (maptype =="ShapeFactor1"){
+	for (i=0;i<n; i++){
+    	val[i] = getResult("Perim.",i) / (2 * PI * sqrt(getResult("Area",i) / PI));
+    	print(val[i]);
+	}
+	
+}else {
 	for (i=0;i<n; i++){
     	val[i] = getResult(qtype,i);      
-}
+	}
 }
 Array.getStatistics(val, min, max, mean, stdDev);
 	
@@ -213,10 +220,6 @@ if (maptype =="DiameterCorr"){
 	min=2 * sqrt(min/PI) * ppx;
 }
 
-if (maptype =="ShapeFactor1"){
-	max=1/pow(min,2);
-	min=1/pow(max,2);
-}
 
 //------------------------ask-what-limits-to-use--------------------------------------------------------
 // query for user input of maxval
@@ -252,11 +255,9 @@ for (i=0; i<roiManager("count"); i++){
         	fval = 2 * sqrt(val[i]/PI) * ppx;
 		}	
 		if (maptype =="ShapeFactor1"){
-			fval = pow((1/fval),2);
-		}
-		else{
-		fval = fval;
-		}
+			fval = val[i];
+    	}
+
 		
         filcol = calc_filcol(fval,user_max_val,user_min_val,maxC,minC);
         //print(filcol);
@@ -269,8 +270,6 @@ for (i=0; i<roiManager("count"); i++){
        }
 updateResults();
 
-	
-	
 }
 
 run(luttype);
