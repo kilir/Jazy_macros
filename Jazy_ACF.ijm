@@ -976,7 +976,7 @@ macro "individual ACFcenters to stack [8]"
             lc = lc + 1; // counter
             selectWindow(fname);
             makeRectangle(xinit + (i - 1) * center, yinit + (j - 1) * center, grid_size, grid_size);
-            run("Copy");
+			run("Copy");
             selectWindow("temp");
             run("Paste");
             doACFsingle("temp");
@@ -1000,6 +1000,103 @@ macro "individual ACFcenters to stack [8]"
 
     print(getTime() - t1);
 }
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+
+macro "individual ACFs to stack [0]"
+{
+
+    function doACFsingle(fname)
+    {
+        run("FD Math...", "image1=" + fname + " operation=Correlate image2=" + fname + " result=Result do");
+    }
+
+    fname = getTitle();
+    selectWindow(fname);
+
+    // query start point and size
+    grid_size = 256;
+    xinit = 0;
+    yinit = 0;
+
+    Dialog.create("x-start");
+    Dialog.addMessage("x-start coordinates");
+    Dialog.addNumber("", xinit);
+    Dialog.show();
+    xinit = Dialog.getNumber();
+
+    Dialog.create("y-start");
+    Dialog.addMessage("y-start coordinates");
+    Dialog.addNumber("", yinit);
+    Dialog.show();
+    yinit = Dialog.getNumber();
+
+    Dialog.create("grid size");
+    Dialog.addMessage("grid size");
+    Dialog.addNumber("", grid_size);
+    Dialog.show();
+    grid_size = Dialog.getNumber();
+
+    xwidth = getWidth();
+    yheight = getHeight();
+
+    nx = floor((xwidth - xinit) / grid_size);
+    ny = floor((yheight - yinit) / grid_size);
+
+    Dialog.create("grids in x direction");
+    Dialog.addMessage("#x");
+    Dialog.addNumber("", nx);
+    Dialog.show();
+    nx = Dialog.getNumber();
+
+    Dialog.create("grids in y direction");
+    Dialog.addMessage("#y");
+    Dialog.addNumber("", ny);
+    Dialog.show();
+    ny = Dialog.getNumber();
+
+    t1 = getTime();
+
+    selectWindow(fname);
+
+    autoUpdate(false);
+    setBatchMode(true);
+
+    newImage("ACF_stack", "8-bit white", grid_size, grid_size, nx * ny);
+    newImage("temp", "8-bit white", grid_size, grid_size, 1);
+    lc = 0;
+    for (i = 1; i <= nx; i++) {
+
+        for (j = 1; j <= ny; j++) {
+
+            lc = lc + 1; // counter
+            selectWindow(fname);
+            makeRectangle(xinit + (i - 1) * grid_size, yinit + (j - 1) * grid_size, grid_size, grid_size);
+			run("Copy");
+            selectWindow("temp");
+            run("Paste");
+            doACFsingle("temp");
+            run("Copy");
+            selectWindow("ACF_stack");
+            Stack.setSlice(lc);
+            run("Paste");
+            close("Result");
+        }
+    }
+
+    close("temp");
+
+    selectWindow("ACF_stack");
+
+    setBatchMode(false);
+    autoUpdate(true);
+
+    // run("Invert", "stack");
+
+    print(getTime() - t1);
+}
+
 
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
